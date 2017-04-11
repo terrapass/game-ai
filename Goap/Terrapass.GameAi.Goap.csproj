@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{77FE96E8-B07B-4820-8B5B-56A3DCF21B7F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Terrapass.GameAi.Goap</RootNamespace>
+    <AssemblyName>Terrapass.GameAi.Goap</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SynchReleaseVersion>false</SynchReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <LangVersion>6</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <LangVersion>6</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\Agents\Agent.cs" />
+    <Compile Include="Source\Agents\AgentEnvironment.cs" />
+    <Compile Include="Source\Agents\ExecutionStatus.cs" />
+    <Compile Include="Source\Agents\GoalSelector.cs" />
+    <Compile Include="Source\Agents\IAction.cs" />
+    <Compile Include="Source\Agents\IActionFactory.cs" />
+    <Compile Include="Source\Agents\IAgent.cs" />
+    <Compile Include="Source\Agents\IGoalSelector.cs" />
+    <Compile Include="Source\Agents\IPlanExecution.cs" />
+    <Compile Include="Source\Agents\IPlanExecutor.cs" />
+    <Compile Include="Source\Agents\PlanExecutor.cs" />
+    <Compile Include="Source\Agents\SimpleActionFactory.cs" />
+    <Compile Include="Source\Graphs\AstarPathfinder.cs" />
+    <Compile Include="Source\Graphs\AstarPathfinderConfiguration.cs" />
+    <Compile Include="Source\Graphs\IGraphEdge.cs" />
+    <Compile Include="Source\Graphs\IGraphNode.cs" />
+    <Compile Include="Source\Graphs\IPathfinder.cs" />
+    <Compile Include="Source\Graphs\NoPathExistsException.cs" />
+    <Compile Include="Source\Graphs\Path.cs" />
+    <Compile Include="Source\Graphs\PathCostHeuristic.cs" />
+    <Compile Include="Source\Graphs\PathNotFoundException.cs" />
+    <Compile Include="Source\Graphs\PathfindingTimeoutExceeded.cs" />
+    <Compile Include="Source\Planning\ForwardPlanner.cs" />
+    <Compile Include="Source\Planning\Goal.cs" />
+    <Compile Include="Source\Planning\IKnowledgeProvider.cs" />
+    <Compile Include="Source\Planning\IPlanner.cs" />
+    <Compile Include="Source\Planning\Plan.cs" />
+    <Compile Include="Source\Planning\PlanNotFoundException.cs" />
+    <Compile Include="Source\Planning\PlanningAction.cs" />
+    <Compile Include="Source\Planning\RegressivePlanner.cs" />
+    <Compile Include="Source\Planning\SymbolId.cs" />
+    <Compile Include="Source\Planning\UnknownSymbolException.cs" />
+    <Compile Include="Source\Planning\WorldState.cs" />
+    <Compile Include="Source\Planning\Effects\Add.cs" />
+    <Compile Include="Source\Planning\Effects\IEffect.cs" />
+    <Compile Include="Source\Planning\Effects\SetFalse.cs" />
+    <Compile Include="Source\Planning\Effects\SetTrue.cs" />
+    <Compile Include="Source\Planning\Effects\SetValue.cs" />
+    <Compile Include="Source\Planning\Effects\SingleSymbolEffect.cs" />
+    <Compile Include="Source\Planning\Effects\Subtract.cs" />
+    <Compile Include="Source\Planning\Internal\ForwardEdge.cs" />
+    <Compile Include="Source\Planning\Internal\ForwardNode.cs" />
+    <Compile Include="Source\Planning\Internal\ForwardNodeExpander.cs" />
+    <Compile Include="Source\Planning\Internal\INodeExpander.cs" />
+    <Compile Include="Source\Planning\Internal\IRegressiveStatePopulator.cs" />
+    <Compile Include="Source\Planning\Internal\IWorldStatePopulator.cs" />
+    <Compile Include="Source\Planning\Internal\RegressiveEdge.cs" />
+    <Compile Include="Source\Planning\Internal\RegressiveNode.cs" />
+    <Compile Include="Source\Planning\Internal\RegressiveNodeExpander.cs" />
+    <Compile Include="Source\Planning\Internal\RegressiveState.cs" />
+    <Compile Include="Source\Planning\Internal\RegressiveStatePopulator.cs" />
+    <Compile Include="Source\Planning\Internal\RelevantSymbolsPopulator.cs" />
+    <Compile Include="Source\Planning\Preconditions\IPrecondition.cs" />
+    <Compile Include="Source\Planning\Preconditions\IsEqual.cs" />
+    <Compile Include="Source\Planning\Preconditions\IsFalse.cs" />
+    <Compile Include="Source\Planning\Preconditions\IsInRange.cs" />
+    <Compile Include="Source\Planning\Preconditions\IsNotGreater.cs" />
+    <Compile Include="Source\Planning\Preconditions\IsNotSmaller.cs" />
+    <Compile Include="Source\Planning\Preconditions\IsTrue.cs" />
+    <Compile Include="Source\Planning\Preconditions\ValueRange.cs" />
+    <Compile Include="Source\Utils\Collections\IPriorityQueue.cs" />
+    <Compile Include="Source\Utils\Collections\ListBasedPriorityQueue.cs" />
+    <Compile Include="Source\Utils\Collections\SortedListBasedPriorityQueue.cs" />
+    <Compile Include="Source\Debug\DebugUtils.cs" />
+    <Compile Include="Source\Debug\PreconditionUtils.cs" />
+    <Compile Include="Source\Utils\Time\IResettableTimer.cs" />
+    <Compile Include="Source\Utils\Time\ITimer.cs" />
+    <Compile Include="Source\Utils\Time\ResettableExecutionTimer.cs" />
+    <Compile Include="Source\Utils\Time\StopwatchExecutionTimer.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Source\" />
+    <Folder Include="Source\Debug\" />
+    <Folder Include="Source\Utils\Time\" />
+  </ItemGroup>
+</Project>
