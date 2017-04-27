@@ -28,6 +28,8 @@ namespace Terrapass.GameAi.Goap.Agents
 			   || env.CurrentPlanExecution.Status == ExecutionStatus.Complete
 			   || env.CurrentPlanExecution.Status == ExecutionStatus.Interrupted)
 			{
+				// If the plan was interrupted, force goal reevaluation and plan for the most relevant goal,
+				// if not - don't force reevalutaion and just plan for the most relevant goal.
 				this.AchieveRelevantGoal(env.CurrentPlanExecution.Status == ExecutionStatus.Interrupted);
 			}
 			// If the execution of the current plan has failed, attepmt to replan for the same goal,
@@ -36,26 +38,32 @@ namespace Terrapass.GameAi.Goap.Agents
 			{
 				try
 				{
-					// Attempt to re-plan
+					// Attempt to re-plan for the current goal
 					env.PlanExecutor.SubmitForExecution(
 						env.Planner.FormulatePlan(env.KnowledgeProvider, env.SupportedPlanningActions, this.currentGoal)
 					);
 				}
 				catch(PlanNotFoundException)
 				{
-					// TODO: Log
+					// Find the most relevant goal and plan for it
 					this.AchieveRelevantGoal(false);
 				}
 			}
 			else if(env.CurrentPlanExecution.Status == ExecutionStatus.InProgress)
 			{
-				// TODO: Read reevaluation sensor and, if needed interrupt the current plan.
-				// AchieveRelevantGoal() will be called during one of the next updates, 
-				// when plan executor's current execution reaches Interrupted status.
-//				if(env.Sensor.IsReevaluationNeeded)
-//				{
-//					env.PlanExecutor.InterruptExecution();
-//				}
+				// If reevaluation sensor fires, force goal reevaluation and,
+				// if a different goal is selected than the one currently pursued,
+				// interrupt the current plan execution.
+				if(env.ReevaluationSensor.IsReevaluationNeeded)
+				{
+					env.GoalSelector.ForceReevaluation();
+					var mostRelevantGoal = env.GoalSelector.RelevantGoals.FirstOrDefault();
+					if(mostRelevantGoal != null
+					   && !env.PlanExecutor.CurrentExecution.Plan.Goal.Equals(mostRelevantGoal))
+					{
+						env.PlanExecutor.InterruptExecution();
+					}
+				}
 			}
 
 			env.PlanExecutor.Update();

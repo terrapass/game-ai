@@ -14,20 +14,22 @@ namespace Terrapass.GameAi.Goap.Agents
 		public IPlanner Planner { get; }
 		public IKnowledgeProvider KnowledgeProvider { get; }
 		public IPlanExecutor PlanExecutor { get; }
-		//public IReevaluationSensor Sensor { get; }
+		public IReevaluationSensor ReevaluationSensor {get;}
 		// etc.
 
 		public AgentEnvironment(
 			IGoalSelector goalSelector,
 			IPlanner planner,
 			IKnowledgeProvider knowledgeProvider,
-			IPlanExecutor planExecutor
+			IPlanExecutor planExecutor,
+			IReevaluationSensor reevaluationSensor = null
 		)
 		{
 			this.GoalSelector = PreconditionUtils.EnsureNotNull(goalSelector, "goalSelector");
 			this.Planner = PreconditionUtils.EnsureNotNull(planner, "planner");
 			this.KnowledgeProvider = PreconditionUtils.EnsureNotNull(knowledgeProvider, "knowledgeProvider");
 			this.PlanExecutor = PreconditionUtils.EnsureNotNull(planExecutor, "planExecutor");
+			this.ReevaluationSensor = reevaluationSensor != null ? reevaluationSensor : new NullReevaluationSensor();
 		}
 
 		public IPlanExecution CurrentPlanExecution
@@ -50,6 +52,7 @@ namespace Terrapass.GameAi.Goap.Agents
 			private IPlanner planner;
 			private IKnowledgeProvider knowledgeProvider;
 			private IPlanExecutor planExecutor;
+			private IReevaluationSensor reevaluationSensor;
 
 			public Builder()
 			{
@@ -80,11 +83,17 @@ namespace Terrapass.GameAi.Goap.Agents
 				return this;
 			}
 
+			public Builder WithReevaluationSensor(IReevaluationSensor reevaluationSensor)
+			{
+				this.reevaluationSensor = reevaluationSensor;
+				return this;
+			}
+
 			public AgentEnvironment Build()
 			{
 				try
 				{
-					return new AgentEnvironment(goalSelector, planner, knowledgeProvider, planExecutor);
+					return new AgentEnvironment(goalSelector, planner, knowledgeProvider, planExecutor, reevaluationSensor);
 				}
 				catch(ArgumentNullException)
 				{
