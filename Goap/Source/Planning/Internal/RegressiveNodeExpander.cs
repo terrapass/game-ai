@@ -104,12 +104,24 @@ namespace Terrapass.GameAi.Goap.Planning.Internal
 
 				foreach(var precond in action.Preconditions)
 				{
-					resultingConstraintsBuilder.IntersectRange(precond.SymbolId, precond.AsValueRange);
-					// If we've arrived at an unsatisfiable constraint
-					if(resultingConstraintsBuilder[precond.SymbolId].IsEmpty)
+					try
 					{
-						deadend = true;
-						break;
+						resultingConstraintsBuilder.IntersectRange(precond.SymbolId, precond.AsValueRange);
+						// If we've arrived at an unsatisfiable constraint
+						if(resultingConstraintsBuilder[precond.SymbolId].IsEmpty)
+						{
+							deadend = true;
+							break;
+						}
+					}
+					catch(NotImplementedException)
+					{
+						throw new InvalidOperationException(
+							string.Format(
+								"Precondition {0} cannot be used with RegressivePlanner: AsValueRange must be implemented",
+								precond.GetType()
+							)
+						);
 					}
 				}
 
