@@ -103,6 +103,10 @@
     <Compile Include="Source\Utils\Time\ITimer.cs" />
     <Compile Include="Source\Utils\Time\ResettableExecutionTimer.cs" />
     <Compile Include="Source\Utils\Time\StopwatchExecutionTimer.cs" />
+    <Compile Include="Source\Planning\Preconditions\SimplePrecondition.cs" />
+    <Compile Include="Source\Agents\IReevaluationSensor.cs" />
+    <Compile Include="Source\Agents\CompositeReevaluationSensor.cs" />
+    <Compile Include="Source\Agents\NullReevaluationSensor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
