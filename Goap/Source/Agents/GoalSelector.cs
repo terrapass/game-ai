@@ -24,13 +24,27 @@ namespace Terrapass.GameAi.Goap.Agents
 
 		private IEnumerable<Goal> relevantGoals;
 
-		public GoalSelector(IDictionary<Goal, GoalEvaluator> evaluators, float reevaluationPeriod = DEFAULT_REEVALUATION_PERIOD)
+		public GoalSelector(
+			IDictionary<Goal, GoalEvaluator> evaluators, 
+			float reevaluationPeriod = DEFAULT_REEVALUATION_PERIOD,
+			Goal defaultGoal = null
+		)
 		{
 			this.evaluators = PreconditionUtils.EnsureNotNull(evaluators, "evaluators");
 			this.reevaluationPeriod = reevaluationPeriod;
 			this.reevaluationTimer = new ResettableStopwatchExecutionTimer(false);
 
+			this.DefaultGoal = defaultGoal != null ? defaultGoal : IDLE_GOAL;
+
 			this.ForceReevaluation();
+		}
+
+		public GoalSelector(
+			IDictionary<Goal, GoalEvaluator> evaluators,
+			Goal defaultGoal
+		) : this(evaluators, DEFAULT_REEVALUATION_PERIOD, defaultGoal)
+		{
+
 		}
 
 		#region IGoalSelector implementation
@@ -44,12 +58,9 @@ namespace Terrapass.GameAi.Goap.Agents
 				return this.relevantGoals;
 			}
 		}
-		public Goal DefaultGoal
-		{
-			get {
-				return IDLE_GOAL;
-			}
-		}
+
+		// FIXME: Maybe this should be included in the relevant goals enumeration at the last position?
+		public Goal DefaultGoal { get; }
 
 		public void ForceReevaluation()
 		{

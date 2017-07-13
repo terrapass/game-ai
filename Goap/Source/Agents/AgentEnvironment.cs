@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Terrapass.GameAi.Goap.Debug;
+using Terrapass.GameAi.Goap.Logging;
 
 using Terrapass.GameAi.Goap.Planning;
 
@@ -11,25 +12,30 @@ namespace Terrapass.GameAi.Goap.Agents
 	public sealed class AgentEnvironment
 	{
 		public IGoalSelector GoalSelector { get; }
-		public IPlanner Planner { get; }
+		public IPlanningSystem PlanningSystem { get; }
 		public IKnowledgeProvider KnowledgeProvider { get; }
 		public IPlanExecutor PlanExecutor { get; }
 		public IReevaluationSensor ReevaluationSensor {get;}
 		// etc.
 
+		public ILogger Logger { get; }
+
 		public AgentEnvironment(
 			IGoalSelector goalSelector,
-			IPlanner planner,
+			IPlanningSystem planningSystem,
 			IKnowledgeProvider knowledgeProvider,
 			IPlanExecutor planExecutor,
-			IReevaluationSensor reevaluationSensor = null
+			IReevaluationSensor reevaluationSensor = null,
+			ILogger logger = null
 		)
 		{
 			this.GoalSelector = PreconditionUtils.EnsureNotNull(goalSelector, "goalSelector");
-			this.Planner = PreconditionUtils.EnsureNotNull(planner, "planner");
+			this.PlanningSystem = PreconditionUtils.EnsureNotNull(planningSystem, "planningSystem");
 			this.KnowledgeProvider = PreconditionUtils.EnsureNotNull(knowledgeProvider, "knowledgeProvider");
 			this.PlanExecutor = PreconditionUtils.EnsureNotNull(planExecutor, "planExecutor");
 			this.ReevaluationSensor = reevaluationSensor != null ? reevaluationSensor : new NullReevaluationSensor();
+
+			this.Logger = logger != null ? logger : new NullLogger();
 		}
 
 		public IPlanExecution CurrentPlanExecution
@@ -49,10 +55,11 @@ namespace Terrapass.GameAi.Goap.Agents
 		public class Builder
 		{
 			private IGoalSelector goalSelector;
-			private IPlanner planner;
+			private IPlanningSystem planningSystem;
 			private IKnowledgeProvider knowledgeProvider;
 			private IPlanExecutor planExecutor;
 			private IReevaluationSensor reevaluationSensor;
+			private ILogger logger;
 
 			public Builder()
 			{
@@ -65,9 +72,9 @@ namespace Terrapass.GameAi.Goap.Agents
 				return this;
 			}
 
-			public Builder WithPlanner(IPlanner planner)
+			public Builder WithPlanningSystem(IPlanningSystem planningSystem)
 			{
-				this.planner = PreconditionUtils.EnsureNotNull(planner, "planner");
+				this.planningSystem = PreconditionUtils.EnsureNotNull(planningSystem, "planningSystem");
 				return this;
 			}
 
@@ -89,11 +96,17 @@ namespace Terrapass.GameAi.Goap.Agents
 				return this;
 			}
 
+			public Builder WithLogger(ILogger logger)
+			{
+				this.logger = logger;
+				return this;
+			}
+
 			public AgentEnvironment Build()
 			{
 				try
 				{
-					return new AgentEnvironment(goalSelector, planner, knowledgeProvider, planExecutor, reevaluationSensor);
+					return new AgentEnvironment(goalSelector, planningSystem, knowledgeProvider, planExecutor, reevaluationSensor, logger);
 				}
 				catch(ArgumentNullException)
 				{
