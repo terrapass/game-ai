@@ -107,11 +107,21 @@
     <Compile Include="Source\Agents\IReevaluationSensor.cs" />
     <Compile Include="Source\Agents\CompositeReevaluationSensor.cs" />
     <Compile Include="Source\Agents\NullReevaluationSensor.cs" />
+    <Compile Include="Source\Planning\IPlanningSystem.cs" />
+    <Compile Include="Source\Planning\ThreadedPlanningSystem.cs" />
+    <Compile Include="Source\Planning\PlanningStatus.cs" />
+    <Compile Include="Source\Logging\ILogger.cs" />
+    <Compile Include="Source\Logging\LogLevel.cs" />
+    <Compile Include="Source\Logging\NullLogger.cs" />
+    <Compile Include="Source\Logging\ILoggerAware.cs" />
+    <Compile Include="Source\Planning\BlockingPlanningSystem.cs" />
+    <Compile Include="Source\Graphs\ITimeSlicedPathfinder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Source\" />
     <Folder Include="Source\Debug\" />
     <Folder Include="Source\Utils\Time\" />
+    <Folder Include="Source\Logging\" />
   </ItemGroup>
 </Project>
